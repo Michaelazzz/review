@@ -3,13 +3,16 @@
         <Label 
             row="0" 
             text="Today"
+            class="header"
         ></Label>
         <BaseList
             row="1"
+            type="not-done"
             :list="todayItems"
         />
         <BaseList
             row="2"
+            type="done"
             :list="todayDoneItems"
         />
     </GridLayout>

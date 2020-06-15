@@ -60,9 +60,31 @@ import Month from './Month';
   }
 </script>
 
-<style scoped>
+<style>
     ActionBar {
         /* background-color: #53ba82; */
         color: #ffffff;
     }
+
+    .header {
+        /* background-color: #35495E; */
+        color: white;
+        font-size: 34;
+        font-weight: 600;
+        padding: 0 15 15 15;
+        margin: 0;
+    }
+
+    .list-entry {
+        padding: 0 15;
+    }
+
+    .list-entry Label {
+        font-weight: bold;
+        font-size: 17;
+        vertical-align: middle;
+        padding: 17 0;
+        margin: 0;
+    }
+
 </style>
