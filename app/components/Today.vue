@@ -4,30 +4,24 @@
             row="0" 
             text="Today"
         ></Label>
-        <ListView 
-            row="2" 
-            class="list-group" 
-            for="item in todayItems"
-            @itemTap="onItemTap"
-        >
-            <v-template>
-                <Label :text="item.name" textWrap="true" />
-            </v-template>
-        </ListView>
-        <ListView 
-            row="2" 
-            class="list-group" 
-            for="item in todayDoneItems"
-            @itemTap="onItemTap"
-        >
-            <v-template>
-                <Label :text="item.name" textWrap="true" />
-            </v-template>
-        </ListView>
+        <BaseList
+            row="1"
+            :list="todayItems"
+        />
+        <BaseList
+            row="2"
+            :list="todayDoneItems"
+        />
     </GridLayout>
 </template>
 <script>
+
+import BaseList from './BaseList';
+
 export default {
+    components: {
+        BaseList
+    },
     props: {
 
     },
@@ -49,7 +43,11 @@ export default {
                     name: "Workout"
                 },
             ],
-            todayDoneItems: [],
+            todayDoneItems: [
+                {
+                    name: "Do something fun"
+                }
+            ],
         };
     },
     methods: {
