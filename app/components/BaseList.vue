@@ -5,33 +5,22 @@
         for="item in list"
     >
         <v-template>
-            <BaseListItem
-                v-if="type === ''"
-                :item=item
-            />
-            <DoneListItem
-                v-else-if="type === 'done'"
-                :item="item"
-            />
-            <NotDoneListItem
-                v-else-if="type === 'not-done'"
-                :item="item"
-            />
+            <GridLayout 
+                columns="auto, *" 
+                class="list-entry"
+            >
+                <Label 
+                    col="1" 
+                    :text="item.name" 
+                    textWrap="true" 
+                />
+            </GridLayout>
         </v-template>
     </ListView>
 </template>
 <script>
 
-import NotDoneListItem from './NotDoneListItem';
-import DoneListItem from './DoneListItem';
-import BaseListItem from './BaseListItem';
-
 export default {
-    components: {
-        NotDoneListItem,
-        DoneListItem,
-        BaseListItem,
-    },
     props: {
         row: {
             type: String,
@@ -41,10 +30,6 @@ export default {
             type: Array,
             default: () => []
         },
-        type: {
-            type: String,
-            default: "",
-        }
     }
 }
 </script>

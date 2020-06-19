@@ -3,6 +3,7 @@
         <Label 
             row="0" 
             text="Week"
+            class="header"
         ></Label>
     </GridLayout>
 </template>

@@ -3,6 +3,7 @@
         <Label 
             row="0" 
             text="Month"
+            class="header"
         ></Label>
     </GridLayout>
 </template>
