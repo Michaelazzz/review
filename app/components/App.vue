@@ -56,7 +56,7 @@ import Month from './Month';
         onTabChange(tab) {
             this.activeTabIndex = tab.value;
         }
-    }
+    },
   }
 </script>
 
@@ -68,7 +68,7 @@ import Month from './Month';
 
     .header {
         /* background-color: #35495E; */
-        color: white;
+        color: black;
         font-size: 34;
         font-weight: 600;
         padding: 0 15 15 15;
@@ -84,6 +84,13 @@ import Month from './Month';
         font-size: 17;
         vertical-align: middle;
         padding: 17 0;
+        margin: 0;
+    }
+
+    .list-entry-header {
+        font-weight: bold;
+        font-size: 17;
+        vertical-align: middle;
         margin: 0;
     }
 

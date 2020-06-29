@@ -1,13 +1,19 @@
 <template>
-    <GridLayout rows="auto, *, *">
+    <GridLayout rows="auto, auto, *, auto, *, auto">
         <Label 
             row="0" 
-            text="Today"
             class="header"
-        ></Label>
+            textWrap="true"
+        >Hi {{ name }}, what do you want to do today?</Label>
 
-        <ListView 
+        <Label 
             row="1" 
+            text="Not Done"
+            textWrap="true"
+            class="list-entry list-entry-header"
+        />
+        <ListView 
+            row="2" 
             class="list-group" 
             for="item in todayNotDoneItems"
         >
@@ -16,12 +22,6 @@
                     columns="auto, *" 
                     class="list-entry list-entry-not-done"
                 >
-                    <Label 
-                        col="0"
-                        v-on:tap="onNotDoneCircleTap(item)"
-                        class="circle" 
-                        text=" " 
-                    />
                     <Label 
                         col="1" 
                         v-on:tap="onNotDoneItemTap(item)"
@@ -32,8 +32,14 @@
             </v-template>
         </ListView>
 
+        <Label 
+            row="3" 
+            text="Done"
+            textWrap="true"
+            class="list-entry list-entry-header"
+        />
         <ListView 
-            row="2" 
+            row="4" 
             class="list-group" 
             for="item in todayDoneItems"
         >
@@ -43,61 +49,68 @@
                     class="list-entry list-entry-done"
                 >
                     <Label 
-                        col="1" 
+                        col="0" 
                         v-on:tap="onDoneItemTap(item)"
                         :text="item.name" 
                         textWrap="true" 
+                    />
+                    <ResourceActionButton
+                        col="1"
+
                     />
                 </GridLayout>
             </v-template>
         </ListView>
 
         <!-- button to display list of items -->
+        <Button 
+            row="5"
+            text="Add Item" 
+            @tap="addItemModal"
+        />
+
     </GridLayout>
 </template>
 <script>
 
+import { mapState, mapGetters } from 'vuex';
 import BaseList from './BaseList';
+import BaseModalVue from './BaseModal.vue';
+import ResourceActionButton from './ResourceActionButton.vue';
 
 export default {
     components: {
         BaseList,
+        ResourceActionButton
     },
     props: {
 
     },
     data() {
         return {
-            items: [
-                {
-                    name: "Workout"
-                },
-                {
-                    name: "Read nonfiction book"
-                },
-                {
-                    name: "Do something fun"
-                }
-            ],
-            todayNotDoneItems: [
-                {
-                    name: "Workout"
-                },
-                {
-                    name: "Read nonfiction book"
-                },
-                {
-                    name: "Do something fun"
-                }
-            ],
-            todayDoneItems: [
-                {
-                    name: "Mood"
-                }
-            ],
+            
+            
         };
     },
+    mounted() {
+        
+    },
+    computed: {
+        ...mapState([
+            'name',
+            'items',
+            'todayNotDoneItems',
+            'todayDoneItems'
+        ]),
+        ...mapGetters([
+            'countItems',
+            'getItems'
+        ])
+    },
     methods: {
+        addItemModal() {
+            this.$showModal(BaseModalVue)
+        },
         onNotDoneCircleTap(item) {
             const index = this.todayNotDoneItems.indexOf(item);
             this.todayDoneItems.unshift(item);
@@ -162,7 +175,8 @@ export default {
                 }
             });
         },
-    }
+    },
+    
 }
 </script>
 <style scoped>
