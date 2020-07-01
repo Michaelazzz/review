@@ -4,36 +4,40 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+
 	state: {
 		name: 'Michaela',
 		items: [
 			{
 				id: 1,
-				name: "Workout"
+				name: 'Workout'
 			},
 			{
 				id: 2,
-				name: "Read nonfiction book"
+				name: 'Read nonfiction book'
 			},
 			{
 				id: 3,
-				name: "Do something fun"
+				name: 'Do something fun'
 			},
 			{
 				id: 4,
-				name: "Mood"
+				name: 'Mood'
+			},
+			
+		],
+		today: [
+			{
+				id: 6,
+				name: 'Work on REVEIW',
+				status: false
 			},
 			{
 				id: 5,
-				name: "Eat chocolate"
-			},
-			{
-				id: 6,
-				name: "Work on REVEIW"
+				name: 'Eat chocolate',
+				status: true
 			},
 		],
-		todayNotDoneItems: [],
-		todayDoneItems: [],
 	},
 	getters: {
 		countItems: state => {
@@ -50,14 +54,26 @@ export default new Vuex.Store({
 		},
 		getItemById: (state) => (id) => {
 			return state.items.find(item => item.id === id)
+		},
+		getItemStatus: item => {
+			return item.status
+		},
+		inItems: name => {
+			if(state.items.indexOf(item)){
+				return true
+			}
+			return false
 		}
 	},
 	mutations: {
 		ADD_ITEM_TO_TODAY: (state, item) => {
 			const index = state.items.indexOf(item);
-            state.todayNotDoneItems.unshift(item);
+            state.today.unshift(item);
             state.items.splice(index, 1);
-		}
+		},
+		ADD_ITEM_TO_ITEMS: (state, item) => {
+            state.items.unshift(item);
+		},
 		// addItem(state, item) {
 		// 	state.items.push(item)
 		// },

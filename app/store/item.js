@@ -1,7 +1,8 @@
 export default {
 	state: {
 		id: null,
-        name: '',
+		name: '',
+		status: false,
         subItems: [],
     },
     getters: {

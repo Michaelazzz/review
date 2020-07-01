@@ -1,21 +1,15 @@
 <template>
-    <GridLayout rows="auto, auto, *, auto, *, auto">
+    <GridLayout rows="auto, *, auto">
         <Label 
             row="0" 
             class="header"
             textWrap="true"
         >Hi {{ name }}, what do you want to do today?</Label>
 
-        <Label 
-            row="1" 
-            text="Not Done"
-            textWrap="true"
-            class="list-entry list-entry-header"
-        />
         <ListView 
-            row="2" 
+            row="1" 
             class="list-group" 
-            for="item in todayNotDoneItems"
+            for="item in today"
         >
             <v-template>
                 <GridLayout 
@@ -26,37 +20,8 @@
                         col="1" 
                         v-on:tap="onNotDoneItemTap(item)"
                         :text="item.name" 
+                        :class="{ 'list-entry-done': item.status }"
                         textWrap="true" 
-                    />
-                </GridLayout>
-            </v-template>
-        </ListView>
-
-        <Label 
-            row="3" 
-            text="Done"
-            textWrap="true"
-            class="list-entry list-entry-header"
-        />
-        <ListView 
-            row="4" 
-            class="list-group" 
-            for="item in todayDoneItems"
-        >
-            <v-template>
-                <GridLayout 
-                    columns="*" 
-                    class="list-entry list-entry-done"
-                >
-                    <Label 
-                        col="0" 
-                        v-on:tap="onDoneItemTap(item)"
-                        :text="item.name" 
-                        textWrap="true" 
-                    />
-                    <ResourceActionButton
-                        col="1"
-
                     />
                 </GridLayout>
             </v-template>
@@ -64,7 +29,7 @@
 
         <!-- button to display list of items -->
         <Button 
-            row="5"
+            row="2"
             text="Add Item" 
             @tap="addItemModal"
         />
@@ -75,12 +40,11 @@
 
 import { mapState, mapGetters } from 'vuex';
 import BaseList from './BaseList';
-import BaseModalVue from './BaseModal.vue';
 import ResourceActionButton from './ResourceActionButton.vue';
+import ItemsModalVue from './ItemsModal.vue';
 
 export default {
     components: {
-        BaseList,
         ResourceActionButton
     },
     props: {
@@ -99,17 +63,16 @@ export default {
         ...mapState([
             'name',
             'items',
-            'todayNotDoneItems',
-            'todayDoneItems'
+            'today',
         ]),
         ...mapGetters([
             'countItems',
-            'getItems'
+            'getItems',
         ])
     },
     methods: {
         addItemModal() {
-            this.$showModal(BaseModalVue)
+            this.$showModal(ItemsModalVue)
         },
         onNotDoneCircleTap(item) {
             const index = this.todayNotDoneItems.indexOf(item);
@@ -192,7 +155,7 @@ export default {
         margin: 0 20 0 10;
     }
 
-    .list-entry-done Label {
+    .list-entry-done {
         text-decoration: line-through;
     }
 </style>
