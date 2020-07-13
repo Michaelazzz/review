@@ -8,7 +8,7 @@
                 row="0"
                 text="Add Item"
                 textWrap="true"
-                class="list-entry list-entry-header"
+                class="modal-header"
             />
             
             <TextField 
@@ -32,14 +32,14 @@
             />
         </GridLayout>
         <GridLayout
-            rows="auto, *, auto, auto"
+            rows="auto, 300, auto, auto"
             v-else
         >
             <Label 
                 row="0"
                 text="My Items"
                 textWrap="true"
-                class="list-entry list-entry-header"
+                class="modal-header"
             />
             <ListView 
                 row="1"
@@ -51,7 +51,7 @@
                         class="list-entry list-entry-not-done"
                     >
                         <Label 
-                            @tap="addItemToToday(item)"
+                            @tap="emitAndClose(item)"
                             :text="item.name" 
                             textWrap="true" 
                         />
@@ -73,51 +73,73 @@
 </template>
 <script>
 
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import * as http from "http";
 
 export default { 
-    computed: {
-        ...mapState([
-            'name',
-            'items'
-        ]),
-        ...mapGetters([
-            'countItems',
-            'getItems',
-        ]),
+    props: {
+
+    },
+    data() {
+        return {
+            items: [],
+            newItem: false,
+            newItemName: '',
+        }
+    },
+    mounted() {
+        this.fetchItems();
     },
     methods: {
-        ...mapMutations([
-            'ADD_ITEM_TO_TODAY',
-            'ADD_ITEM_TO_ITEMS'
-        ]),
-        addItemToToday(item) {
-            console.log(item.name)
-            this.ADD_ITEM_TO_TODAY(item)
-            this.closeModal()
+        fetchItems() {
+            http.getJSON("https://run.mocky.io/v3/21d8468a-d833-4300-b492-f7ea3fd18e10")
+            .then(response => {
+                this.items = response.data
+            }, error => {
+                console.log(error)
+            });
+        },
+        addItem(item) {
+            console.log(JSON.stringify(item))
+            http.request({
+                url: "https://run.mocky.io/v3/f34ce496-d288-4d80-83e4-aa573e926403",
+                method: "POST",
+                content: JSON.stringify(item)
+            }).then(response => {
+                console.log("item added")
+                // console.log(response.content.toJSON().data)
+            }, error => {
+                console.log(error)
+            });
+        },
+        emitAndClose(item) {
+            this.$modal.close(item)
         },
         addItemToItems() {
             if(this.itemName != ''){
-                this.ADD_ITEM_TO_ITEMS({
-                    name: this.newItemName,
-                    status: false
+                
+                this.addItem({
+                    name: this.newItemName
                 })
+
                 this.newItemName = ''
                 this.newItem = false
+
+                this.fetchItems()
             }
         },
         closeModal() {
             this.$modal.close()
         },
     },
-    data() {
-        return {
-            newItem: false,
-            newItemName: '',
-        }
-    },
+    
 }
 </script>
 <style scoped>
-    
+    .modal-header {
+        font-weight: bold;
+        font-size: 17;
+        vertical-align: middle;
+        padding: 15 0 10 15;
+        margin: 0;
+    }
 </style>

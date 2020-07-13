@@ -1,32 +1,43 @@
 <template>
-    <GridLayout rows="auto, *, auto">
+    <GridLayout 
+        rows="auto, *, auto"
+    >
         <Label 
             row="0" 
             class="header"
             textWrap="true"
         >Hi {{ name }}, what do you want to do today?</Label>
 
-        <ListView 
-            row="1" 
-            class="list-group" 
-            for="item in today"
+        <ScrollView
+            row="1"
         >
-            <v-template>
-                <GridLayout 
-                    columns="auto, *" 
-                    class="list-entry list-entry-not-done"
-                >
-                    <Label 
-                        col="1" 
-                        v-on:tap="onNotDoneItemTap(item)"
-                        :text="item.name" 
-                        :class="{ 'list-entry-done': item.status }"
-                        textWrap="true" 
-                    />
-                </GridLayout>
-            </v-template>
-        </ListView>
-
+            <ListView  
+                for="item in today"
+            >
+                <v-template>
+                    <GridLayout
+                        class="list-entry"
+                        columns="*, 75"
+                    >
+                        <Label 
+                            col="0"
+                            v-on:tap="onItemTap(item)"
+                            :text="item.name" 
+                            :class="{ 'list-entry-done': item.status }"
+                            textWrap="true" 
+                        />
+                        <ResourceActionButton
+                            col="1"
+                            alignSelf="flex-end"
+                            type="..."
+                            v-on:tap="onItemButtonTap(item)"
+                        />
+                    </GridLayout>
+                </v-template>
+                
+            </ListView>
+            
+        </ScrollView>
         <!-- button to display list of items -->
         <Button 
             row="2"
@@ -39,8 +50,7 @@
 <script>
 
 import { mapState, mapGetters } from 'vuex';
-import BaseList from './BaseList';
-import ResourceActionButton from './ResourceActionButton.vue';
+import ResourceActionButton from './ResourceActionButton';
 import ItemsModalVue from './ItemsModal.vue';
 
 export default {
@@ -52,13 +62,10 @@ export default {
     },
     data() {
         return {
-            
-            
-        };
+            items: null,
+        }
     },
-    mounted() {
-        
-    },
+    
     computed: {
         ...mapState([
             'name',
@@ -68,75 +75,27 @@ export default {
         ...mapGetters([
             'countItems',
             'getItems',
-        ])
+        ]),
+        getItems(){
+            return this.$store.getters.items
+        }
     },
     methods: {
         addItemModal() {
             this.$showModal(ItemsModalVue)
         },
-        onNotDoneCircleTap(item) {
-            const index = this.todayNotDoneItems.indexOf(item);
-            this.todayDoneItems.unshift(item);
-            this.todayNotDoneItems.splice(index, 1);
+        onItemTap(item) {
+            console.log(item.status)
+            if(item.status){
+                //if item has not done
+                
+            }
+            else{
+                //if it is done
+            }
         },
-        onNotDoneItemTap(item) {
-            const index = this.todayNotDoneItems.indexOf(item);
-            const cancel = "Cancel";
-            const markDone = "Mark done";
-            const deleteItem = "Delete";
-
-            action("What do you want to do with this task?", 
-                cancel, 
-                [
-                    markDone,
-                    deleteItem
-                ])
-            .then(result => {
-                console.log(result);
-                switch (result) {
-                    case markDone:
-                        this.todayDoneItems.unshift(item);
-                        this.todayNotDoneItems.splice(index, 1);
-                        break;
-                    case deleteItem:
-                        this.todayNotDoneItems.splice(index, 1);
-                        break;
-                    case cancel || undefined:
-                        break;
-                }
-            });
-        },
-        onDoneCircleTap(item) {
-            const index = this.todayDoneItems.indexOf(item);
-            this.todayNotDoneItems.unshift(item);
-            this.todayDoneItems.splice(index, 1);
-        },
-        onDoneItemTap(item) {
-            const index = this.todayDoneItems.indexOf(item);
-            const cancel = "Cancel";
-            const markNotDone = "Mark not done";
-            const deleteItem = "Delete";
-
-            action("What do you want to do with this task?", 
-                cancel, 
-                [
-                    markNotDone,
-                    deleteItem
-                ])
-            .then(result => {
-                console.log(result);
-                switch (result) {
-                    case markNotDone:
-                        this.todayNotDoneItems.unshift(item);
-                        this.todayDoneItems.splice(index, 1);
-                        break;
-                    case deleteItem:
-                        this.todayDoneItems.splice(index, 1);
-                        break;
-                    case cancel || undefined:
-                        break;
-                }
-            });
+        onItemButtonTap(){
+            this.$showModal(ItemModalVue)
         },
     },
     
@@ -149,10 +108,10 @@ export default {
         padding: 0;
         color: #ffffff;
         font-size: 25;
-        border-color: #ffffff;
+        border-color: #808080;
         border-width: 2;
         border-radius: 40;
-        margin: 0 20 0 10;
+        margin: 0 20 0 0;
     }
 
     .list-entry-done {

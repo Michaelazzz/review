@@ -15,14 +15,21 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-brands-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/vue-fontawesome": "^0.1.10",
     "@nativescript/theme": "^2.2.1",
     "@vue/devtools": "^5.3.3",
     "atob": "^2.1.2",
+    "fontawesome": "^5.6.3",
+    "nativescript-fonticon": "^2.0.0",
     "nativescript-socketio": "^3.3.1",
     "nativescript-sqlite": "^2.6.3",
     "nativescript-toasty": "^3.0.0-alpha.2",
     "nativescript-vue": "^2.6.1",
     "nativescript-vue-devtools": "^1.4.0",
+    "nativescript-vue-fonticon": "^1.0.3",
     "serialize-javascript": "^4.0.0",
     "tns-core-modules": "^6.5.1",
     "vuex": "^3.4.0"
